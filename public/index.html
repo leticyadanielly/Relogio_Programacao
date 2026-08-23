@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Relógio Digital</title>
+  <style>
+    body { background: #0f172a; color: #f8fafc; font-family: monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .clock-card { background: #1e293b; padding: 2rem; border-radius: 12px; text-align: center; border: 1px solid #334155; }
+    #display { font-size: 3.5rem; color: #38bdf8; margin: 1rem 0; font-weight: bold; }
+    #status { font-size: 1.2rem; color: #f1f5f9; margin-top: 1rem; }
+    input, button { padding: 10px; font-size: 1rem; border-radius: 6px; border: none; margin: 4px; }
+    button { background: #38bdf8; color: #0f172a; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="clock-card">
+    <h2>Relógio Digital</h2>
+    <div id="display">00:00:00</div>
+    <div>
+      <input type="text" id="alarm-input" placeholder="HH:MM:SS" />
+      <button id="set-alarm-btn">Definir Alarme</button>
+    </div>
+    <div id="status">Sem alarme</div>
+  </div>
+
+  <script>
+    let alarmTime = null;
+
+    function tick() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const currentTime = h + ':' + m + ':' + s;
+
+      document.getElementById('display').innerText = currentTime;
+
+      if (alarmTime && currentTime === alarmTime) {
+        document.getElementById('status').innerText = '⏰ ALARME DISPARADO!';
+        alarmTime = null;
+      }
+    }
+
+    document.getElementById('set-alarm-btn').addEventListener('click', () => {
+      const input = document.getElementById('alarm-input').value;
+      if (input) {
+        alarmTime = input;
+        document.getElementById('status').innerText = 'Alarme ativo para: ' + alarmTime;
+      }
+    });
+
+    setInterval(tick, 1000);
+    tick();
+  </script>
+</body>
+</html>
